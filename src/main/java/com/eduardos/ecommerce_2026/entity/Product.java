@@ -43,4 +43,9 @@ public class Product {
         this.createdAt = LocalDateTime.now();
         this.status = ProductStatus.CREATED;
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
