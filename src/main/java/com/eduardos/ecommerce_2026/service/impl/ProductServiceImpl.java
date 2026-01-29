@@ -1,7 +1,10 @@
 package com.eduardos.ecommerce_2026.service.impl;
 
-import com.eduardos.ecommerce_2026.dto.ProductDTO;
+import com.eduardos.ecommerce_2026.dto.ProductRequestDTO;
+import com.eduardos.ecommerce_2026.dto.ProductResponseDTO;
 import com.eduardos.ecommerce_2026.entity.Product;
+import com.eduardos.ecommerce_2026.mapper.IProductMapper;
+import com.eduardos.ecommerce_2026.repo.ProductDetailRepository;
 import com.eduardos.ecommerce_2026.repo.ProductRepository;
 import com.eduardos.ecommerce_2026.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,54 +18,80 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    ProductRepository repository;
+    ProductRepository prodRepo;
+
+    @Autowired
+    ProductDetailRepository detailRepository;
+
+    @Autowired
+    ProductDetailRepository productDetailRepo;
+
+    private final IProductMapper productMapper;
+
+    public ProductServiceImpl(IProductMapper productMapper) {
+        this.productMapper = productMapper;
+    }
 
     @Override
-    public Product save(Product product) {
-        return repository.save(product);
+    public ProductResponseDTO save(ProductRequestDTO requestDTO) {
+        Product product = productMapper.DTOtoEntity(requestDTO);
+        return productMapper.entityToDTO(prodRepo.save(product));
     }
 
     @Override
     public void saveAll(List<Product> products) {
-        repository.saveAll(products);
+        prodRepo.saveAll(products);
     }
 
     @Override
-    public List<Product> findAll() {
-        return repository.findAll();
+    public List<ProductResponseDTO> findAll() {
+        return prodRepo.findAll().stream().map(
+                productMapper::entityToDTO
+        ).toList();
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        Optional<Product> optionalProduct = repository.findById(id);
+    public List<ProductResponseDTO> findAllEntityQuery() {
+        return List.of();
+    }
+
+    @Override
+    public List<ProductResponseDTO> findAllEntityGraph() {
+        return prodRepo.findAll().stream().map(
+                productMapper::entityToDTO
+        ).toList();
+    }
+
+    @Override
+    public Optional<ProductResponseDTO> findById(Long id) {
+        Optional<Product> product = prodRepo.findById(id);
+        return Optional.ofNullable(product
+                .map(productMapper::entityToDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found")));
+    }
+
+    @Override
+    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
+        Optional<Product> optionalProduct = prodRepo.findById(id);
         Product product = optionalProduct.orElseThrow(
                 ()-> new EntityNotFoundException("Product not found with ID: " + id)
         );
-        return Optional.ofNullable(product);
-    }
 
-    @Override
-    public Product update(Long id, ProductDTO dto) {
-        Optional<Product> optionalProduct = repository.findById(id);
-        Product product = optionalProduct.orElseThrow(
-                ()-> new EntityNotFoundException("Product not found with ID: " + id)
-        );
+        product.setName(dto.name());
+        product.setPrice(dto.price());
+        product.setStock(dto.stock());
+        product.setStatus(dto.status());
 
-        product.setName(dto.getName());
-        product.setPrice(dto.getPrice());
-        product.setStock(dto.getStock());
-        product.setStatus(dto.getStatus());
-
-        return repository.save(product);
+        return productMapper.entityToDTO(prodRepo.save(product));
     }
 
     @Override
     public void delete(Long id) {
         // I think this is never used IRL
-        Optional<Product> optionalProduct = repository.findById(id);
+        Optional<Product> optionalProduct = prodRepo.findById(id);
         Product product = optionalProduct.orElseThrow(
                 ()-> new EntityNotFoundException("Product not found with ID: " + id)
         );
-        repository.delete(product);
+        prodRepo.delete(product);
     }
 }

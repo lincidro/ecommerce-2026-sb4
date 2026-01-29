@@ -1,10 +1,10 @@
 package com.eduardos.ecommerce_2026.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,7 +18,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name="name", nullable = false, length = 100)
     private String name;
 
     private BigDecimal price;
@@ -33,6 +33,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
     private ProductStatus status;
+
+
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnoreProperties("product") // Ignore the 'user' field in the Profile entity during serialization
+//    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProductDetail detail;
 
     private LocalDateTime createdAt;
 

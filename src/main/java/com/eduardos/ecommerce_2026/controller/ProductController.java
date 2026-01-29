@@ -1,13 +1,12 @@
 package com.eduardos.ecommerce_2026.controller;
 
-import com.eduardos.ecommerce_2026.entity.Product;
+import com.eduardos.ecommerce_2026.dto.ProductRequestDTO;
+import com.eduardos.ecommerce_2026.dto.ProductResponseDTO;
 import com.eduardos.ecommerce_2026.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +24,26 @@ public class ProductController {
     }
 
     @GetMapping("list")
-    public ResponseEntity<List<Product>> findAll() {
+    public ResponseEntity<List<ProductResponseDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+//        return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<ProductResponseDTO> save(@RequestBody ProductRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.save(request));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ProductResponseDTO> updateUser(
+            @PathVariable Long id, @RequestBody ProductRequestDTO request) {
+        return ResponseEntity.ok(service.update(id, request));
     }
 }

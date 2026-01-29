@@ -1,6 +1,7 @@
 package com.eduardos.ecommerce_2026;
 
 import com.eduardos.ecommerce_2026.entity.Product;
+import com.eduardos.ecommerce_2026.entity.ProductDetail;
 import com.eduardos.ecommerce_2026.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,12 +25,22 @@ public class Ecommerce2026Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		List<Product> productList = new ArrayList<>();
+		List<ProductDetail> productDetailListList = new ArrayList<>();
 
-		// 1. Programmatically set values for each entity
-		for (int i = 0; i < 5; i++) {
+		// 1. Create test products and its details
+		for (int i = 1; i <= 5; i++) {
 			Product prod = new Product();
 			prod.setName("Producto #" + i);
 			prod.setPrice(BigDecimal.valueOf(1.99 + i) );
+
+			// Set Detail
+			ProductDetail detail = new ProductDetail();
+			detail.setDescription("Descripción de prueba # " + i);
+			detail.setWeight(Math.random());
+			detail.setDimensions("Dimensiones random para: " + i);
+			detail.setProduct(prod);
+			prod.setDetail(detail);
+
 			// Assuming default values are handled in the entity or DB level
 			productList.add(prod);
 		}
