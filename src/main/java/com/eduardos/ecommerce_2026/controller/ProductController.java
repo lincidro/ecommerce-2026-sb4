@@ -23,6 +23,11 @@ public class ProductController {
         return "Message from product Controller";
     }
 
+    @PostMapping("")
+    public ResponseEntity<ProductResponseDTO> save(@RequestBody ProductRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.save(request));
+    }
+
     @GetMapping("list")
     public ResponseEntity<List<ProductResponseDTO>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
@@ -34,11 +39,6 @@ public class ProductController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
 //        return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
-    }
-
-    @PostMapping("")
-    public ResponseEntity<ProductResponseDTO> save(@RequestBody ProductRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(request));
     }
 
     @PutMapping("{id}")
