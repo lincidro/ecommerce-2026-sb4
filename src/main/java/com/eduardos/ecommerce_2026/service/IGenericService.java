@@ -5,11 +5,11 @@ import com.eduardos.ecommerce_2026.entity.Product;
 import java.util.List;
 import java.util.Optional;
 
-public interface IGenericService<T> {
-    Product save(T t);
+public interface IGenericService<T, ID> {
+    T save(T t);
     void saveAll(List<T> T);
     List<T> findAll();
-    Optional<T> findById(Long id);
-//    Product update(Long id, ProductDTO productDTO);
-    void delete(Long id);
+    Optional<T> findById(ID id);
+    T update(ID id, T t);
+    void delete(ID id);
 }
