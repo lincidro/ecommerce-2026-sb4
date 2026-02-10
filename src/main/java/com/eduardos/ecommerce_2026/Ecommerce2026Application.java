@@ -2,8 +2,10 @@ package com.eduardos.ecommerce_2026;
 
 import com.eduardos.ecommerce_2026.entity.Category;
 import com.eduardos.ecommerce_2026.entity.Product;
+import com.eduardos.ecommerce_2026.entity.ProductCategory;
 import com.eduardos.ecommerce_2026.entity.ProductDetail;
 import com.eduardos.ecommerce_2026.service.CategoryService;
+import com.eduardos.ecommerce_2026.service.ProductCategoryService;
 import com.eduardos.ecommerce_2026.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +25,9 @@ public class Ecommerce2026Application implements CommandLineRunner {
 	@Autowired
 	CategoryService categoryService;
 
+	@Autowired
+	ProductCategoryService productCategoryService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Ecommerce2026Application.class, args);
 	}
@@ -32,20 +37,30 @@ public class Ecommerce2026Application implements CommandLineRunner {
 		List<Category> categoryList = new ArrayList<>();
 		List<Product> productList = new ArrayList<>();
 		List<ProductDetail> productDetailListList = new ArrayList<>();
+		List<ProductCategory> productCategoryList =new ArrayList<>();
 
-		// 1. Create test products and its details
 		for (int i = 1; i <= 5; i++) {
-
 			// Categories
 			Category category = new Category();
 			category.setName("Categoría # " + i);
 			category.setDescription("Categoría # " + i);
 			categoryList.add(category);
+		}
+		categoryService.saveAll(categoryList.stream().toList());
+
+		// 1. Create test products and its details
+		for (int i = 1; i <= 5; i++) {
 
 			// Products
 			Product prod = new Product();
 			prod.setName("Producto #" + i);
 			prod.setPrice(BigDecimal.valueOf(1.99 + i) );
+
+			// set categories
+			ProductCategory pc = new ProductCategory();
+			pc.setProduct(prod);
+			pc.setCategory(categoryList.getFirst());
+			productCategoryList.add(pc);
 
 			// Set Detail
 			ProductDetail detail = new ProductDetail();
@@ -58,7 +73,8 @@ public class Ecommerce2026Application implements CommandLineRunner {
 			// Assuming default values are handled in the entity or DB level
 			productList.add(prod);
 		}
-		categoryService.saveAll(categoryList);
 		productService.saveAll(productList);
+		productCategoryService.saveAll(productCategoryList);
+
 	}
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,6 +26,9 @@ public class Category {
 
     @Column(length = 250)
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    private Set<ProductCategory> products = new HashSet<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

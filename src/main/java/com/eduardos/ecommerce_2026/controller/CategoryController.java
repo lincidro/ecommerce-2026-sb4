@@ -2,14 +2,8 @@ package com.eduardos.ecommerce_2026.controller;
 
 import com.eduardos.ecommerce_2026.dto.CategoryRequestDTO;
 import com.eduardos.ecommerce_2026.dto.CategoryResponseDTO;
-import com.eduardos.ecommerce_2026.dto.ProductRequestDTO;
-import com.eduardos.ecommerce_2026.dto.ProductResponseDTO;
 import com.eduardos.ecommerce_2026.service.CategoryService;
-import com.eduardos.ecommerce_2026.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

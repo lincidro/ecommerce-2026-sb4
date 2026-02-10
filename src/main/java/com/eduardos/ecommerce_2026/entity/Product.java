@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -40,9 +42,31 @@ public class Product {
 //    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductDetail detail;
 
-    private LocalDateTime createdAt;
+    @OneToMany(
+            mappedBy = "product",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<ProductCategory> categories = new HashSet<>();
 
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+    // ✅ ADD CATEGORY
+    public void addCategory(Category category) {
+        ProductCategory pc = new ProductCategory();
+        pc.setProduct(this);
+        pc.setCategory(category);
+        categories.add(pc);
+    }
+
+    // ✅ REMOVE CATEGORY
+    public void removeCategory(Category category) {
+        categories.removeIf(pc ->
+                pc.getCategory().equals(category)
+        );
+    }
 
     @PrePersist
     public void prePersist() {

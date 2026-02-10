@@ -1,7 +1,5 @@
 package com.eduardos.ecommerce_2026.service;
 
-import com.eduardos.ecommerce_2026.entity.Product;
-
 import java.util.List;
 import java.util.Optional;
 
