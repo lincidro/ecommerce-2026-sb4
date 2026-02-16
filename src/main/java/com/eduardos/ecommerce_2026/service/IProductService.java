@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductService {
+public interface IProductService {
     ProductResponseDTO save(ProductRequestDTO requestDTO);
     void saveAll(List<Product> product);
     List<ProductResponseDTO> findAll();

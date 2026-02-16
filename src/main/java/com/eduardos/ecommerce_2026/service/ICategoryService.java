@@ -8,10 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface CategoryService{
+public interface ICategoryService extends IGenericService<
+        Category, CategoryRequestDTO, CategoryResponseDTO, Long> {
 
-    CategoryResponseDTO save(CategoryRequestDTO requestDTO);
-    void saveAll(List<Category> categories);
-    List<CategoryResponseDTO> findAll();
-    Page<CategoryResponseDTO> findAll(Pageable pageable);
+    Page<CategoryResponseDTO> findAllDTOPageable(Pageable pageable);
 }

@@ -5,10 +5,10 @@ import com.eduardos.ecommerce_2026.entity.Category;
 import com.eduardos.ecommerce_2026.entity.Product;
 import com.eduardos.ecommerce_2026.entity.ProductCategory;
 import com.eduardos.ecommerce_2026.mapper.IProductMapper;
-import com.eduardos.ecommerce_2026.repo.CategoryProductRepository;
-import com.eduardos.ecommerce_2026.repo.CategoryRepository;
+import com.eduardos.ecommerce_2026.repo.ProductCategoryRepository;
+import com.eduardos.ecommerce_2026.repo.ICategoryRepository;
 import com.eduardos.ecommerce_2026.repo.ProductRepository;
-import com.eduardos.ecommerce_2026.service.ProductCategoryService;
+import com.eduardos.ecommerce_2026.service.IProductCategoryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductCategoryServiceImpl implements ProductCategoryService {
+public class ProductCategoryServiceImpl implements IProductCategoryService {
 
     @Autowired
     ProductRepository productRepo;
 
     @Autowired
-    CategoryRepository categoryRepo;
+    ICategoryRepository categoryRepo;
 
     @Autowired
-    CategoryProductRepository categoryProductRepository;
+    ProductCategoryRepository categoryProductRepository;
 
     private final IProductMapper productMapper;
 

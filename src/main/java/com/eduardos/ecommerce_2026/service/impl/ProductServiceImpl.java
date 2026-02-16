@@ -7,7 +7,7 @@ import com.eduardos.ecommerce_2026.entity.ProductDetail;
 import com.eduardos.ecommerce_2026.mapper.IProductMapper;
 import com.eduardos.ecommerce_2026.repo.ProductDetailRepository;
 import com.eduardos.ecommerce_2026.repo.ProductRepository;
-import com.eduardos.ecommerce_2026.service.ProductService;
+import com.eduardos.ecommerce_2026.service.IProductService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 
     @Autowired
     ProductRepository prodRepo;
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<ProductResponseDTO> findById(Long id) {
         Optional<Product> product = prodRepo.findById(id);
-        return Optional.ofNullable(product
+        return Optional.of(product
                 .map(productMapper::entityToDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found")));
     }

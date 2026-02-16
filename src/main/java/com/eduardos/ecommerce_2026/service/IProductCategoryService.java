@@ -5,7 +5,7 @@ import com.eduardos.ecommerce_2026.entity.ProductCategory;
 
 import java.util.List;
 
-public interface ProductCategoryService {
+public interface IProductCategoryService {
 
     ProductCategoryResponseDTO save(Long productId, List<Long> categoryIds);
 

@@ -4,9 +4,12 @@ import com.eduardos.ecommerce_2026.entity.Category;
 import com.eduardos.ecommerce_2026.entity.Product;
 import com.eduardos.ecommerce_2026.entity.ProductCategory;
 import com.eduardos.ecommerce_2026.entity.ProductDetail;
-import com.eduardos.ecommerce_2026.service.CategoryService;
-import com.eduardos.ecommerce_2026.service.ProductCategoryService;
-import com.eduardos.ecommerce_2026.service.ProductService;
+import com.eduardos.ecommerce_2026.repo.ICategoryRepository;
+import com.eduardos.ecommerce_2026.repo.ProductCategoryRepository;
+import com.eduardos.ecommerce_2026.repo.ProductRepository;
+import com.eduardos.ecommerce_2026.service.IProductCategoryService;
+import com.eduardos.ecommerce_2026.service.IProductService;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,21 +22,28 @@ import java.util.List;
 @SpringBootApplication
 public class Ecommerce2026Application implements CommandLineRunner {
 
-	@Autowired
-	ProductService productService;
+	private final ICategoryRepository categoryRepository;
+	private final ProductRepository productRepository;
+	private final ProductCategoryRepository productCategoryRepository;
 
 	@Autowired
-	CategoryService categoryService;
+	IProductService productService;
 
 	@Autowired
-	ProductCategoryService productCategoryService;
+	IProductCategoryService productCategoryService;
 
-	public static void main(String[] args) {
+    public Ecommerce2026Application(ICategoryRepository categoryRepository, ProductRepository productRepository, ProductCategoryRepository productCategoryRepository) {
+        this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
+        this.productCategoryRepository = productCategoryRepository;
+    }
+
+    public static void main(String[] args) {
 		SpringApplication.run(Ecommerce2026Application.class, args);
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String @NonNull ... args) throws Exception {
 		List<Category> categoryList = new ArrayList<>();
 		List<Product> productList = new ArrayList<>();
 		List<ProductDetail> productDetailListList = new ArrayList<>();
@@ -46,11 +56,10 @@ public class Ecommerce2026Application implements CommandLineRunner {
 			category.setDescription("Categoría # " + i);
 			categoryList.add(category);
 		}
-		categoryService.saveAll(categoryList.stream().toList());
+		categoryRepository.saveAll(categoryList.stream().toList());
 
 		// 1. Create test products and its details
 		for (int i = 1; i <= 5; i++) {
-
 			// Products
 			Product prod = new Product();
 			prod.setName("Producto #" + i);
@@ -73,8 +82,8 @@ public class Ecommerce2026Application implements CommandLineRunner {
 			// Assuming default values are handled in the entity or DB level
 			productList.add(prod);
 		}
-		productService.saveAll(productList);
-		productCategoryService.saveAll(productCategoryList);
+		productRepository.saveAll(productList);
+		productCategoryRepository.saveAll(productCategoryList);
 
 	}
 }

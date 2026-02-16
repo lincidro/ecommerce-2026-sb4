@@ -39,7 +39,6 @@ public class Product {
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnoreProperties("product") // Ignore the 'user' field in the Profile entity during serialization
-//    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProductDetail detail;
 
     @OneToMany(

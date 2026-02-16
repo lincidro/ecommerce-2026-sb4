@@ -2,7 +2,7 @@ package com.eduardos.ecommerce_2026.controller;
 
 import com.eduardos.ecommerce_2026.dto.ProductRequestDTO;
 import com.eduardos.ecommerce_2026.dto.ProductResponseDTO;
-import com.eduardos.ecommerce_2026.service.ProductService;
+import com.eduardos.ecommerce_2026.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +10,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 //@RestController is a specialized version of the controller. It includes the @Controller and @ResponseBody
@@ -19,7 +21,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductService service;
+    IProductService service;
 
     @GetMapping("")
     public String testMessage() {
@@ -27,8 +29,13 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ProductResponseDTO> save(@RequestBody ProductRequestDTO request) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.save(request));
+    public ResponseEntity<ProductResponseDTO> save(@RequestBody ProductRequestDTO request) throws Exception{
+        // Richardson MM
+        ProductResponseDTO product = service.save(request);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.id()).toUri();
+
+//        return ResponseEntity.status(HttpStatus.OK).body(service.save(request));
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("list-no-pageable")
