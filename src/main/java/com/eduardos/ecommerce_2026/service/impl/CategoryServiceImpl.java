@@ -3,6 +3,7 @@ package com.eduardos.ecommerce_2026.service.impl;
 import com.eduardos.ecommerce_2026.dto.CategoryRequestDTO;
 import com.eduardos.ecommerce_2026.dto.CategoryResponseDTO;
 import com.eduardos.ecommerce_2026.entity.Category;
+import com.eduardos.ecommerce_2026.exception.ResourceNotFoundException;
 import com.eduardos.ecommerce_2026.mapper.ICategoryMapper;
 import com.eduardos.ecommerce_2026.mapper.IGenericMapper;
 import com.eduardos.ecommerce_2026.repo.ICategoryRepository;
@@ -36,7 +37,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public Optional<CategoryResponseDTO> findByIdDTO(Long id) throws Exception {
-        Category category = categoryRepository.findById(id).orElse(new Category());
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return Optional.ofNullable(categoryMapper.entityToDTO(category));
     }
 

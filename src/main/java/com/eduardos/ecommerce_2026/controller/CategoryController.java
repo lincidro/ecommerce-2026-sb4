@@ -2,6 +2,7 @@ package com.eduardos.ecommerce_2026.controller;
 
 import com.eduardos.ecommerce_2026.dto.CategoryRequestDTO;
 import com.eduardos.ecommerce_2026.dto.CategoryResponseDTO;
+import com.eduardos.ecommerce_2026.entity.Category;
 import com.eduardos.ecommerce_2026.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,8 @@ public class CategoryController {
 
     @GetMapping("{id}")
     public ResponseEntity<Optional<CategoryResponseDTO>> findById(@PathVariable Long id) throws Exception {
+
+        Optional<CategoryResponseDTO> responseDTO = categoryService.findByIdDTO(id);
         return ResponseEntity.ok(categoryService.findByIdDTO(id));
     }
 
